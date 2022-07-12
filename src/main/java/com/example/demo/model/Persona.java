@@ -1,13 +1,17 @@
 package com.example.demo.model;
 
+import lombok.ToString;
+
+
+@ToString()
 public class Persona {
 
     private String nombre;
     private String apellido;
     private String sexo;
-    private Integer dni;
+    private int dni;
 
-    public Persona(String nombre, String apellido, String sexo, Integer dni) throws Exception{       
+    public Persona(String nombre, String apellido, String sexo, int dni) throws Exception{       
         if(nombre.equals("") || apellido.equals("") || sexo.equals("")) {
             throw new Exception("Parámetros invalidos");
         }
@@ -26,13 +30,14 @@ public class Persona {
         if(sexo.equals("")) throw new Exception("Parámetro inválido");
         this.sexo = sexo;
     }
-
-    @Override
-    public String toString() {
-        return super.toString(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    
+    public int getDni(){
+        return this.dni;
     }
     
-    
-    
-    
+    public String getApellido(){
+        return this.apellido;
+    }
+
+
 }
