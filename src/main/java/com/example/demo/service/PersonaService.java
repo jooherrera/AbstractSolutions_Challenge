@@ -12,28 +12,29 @@ public class PersonaService {
     @Autowired
     private PersonaRepository repo;
 
-    public void add(Persona persona) throws Exception{
+    public void add(Persona persona) throws Exception {
+
+        if (persona.getDni() == -1) {
+            throw new Exception("Parámetros inválidos.");
+        }
         repo.add(persona);
     }
 
-    public Persona findOne(int dni) {
-        try {
-            return repo.findOne(dni);
-        } catch (Exception e) {
-            return null;
-        }
+    public Persona findOne(int dni) throws Exception {
+
+        return repo.findOne(dni);
+
     }
-    
-    public ArrayList<Persona> findByApellido(String palabra){
+
+    public ArrayList<Persona> findByApellido(String palabra) throws Exception {
+        if (palabra.length() < 3) {
+            throw new Exception("Minimo 3 letras para buscar");
+        }
         return repo.findByApellido(palabra);
     }
-    
-    public void updateSexo(int dni, String sexo) throws Exception{
-        try {
-            repo.updateSexo(dni, sexo);
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
+
+    public void updateSexo(int dni, String sexo) throws Exception {
+        repo.updateSexo(dni, sexo);
     }
 
 }

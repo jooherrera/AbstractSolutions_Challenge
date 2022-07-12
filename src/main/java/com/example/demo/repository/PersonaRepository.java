@@ -14,12 +14,13 @@ public class PersonaRepository {
         this.listaDePersonas = new HashMap();
     }
 
-    public void add(Persona persona)throws Exception{
+    public void add(Persona persona) throws Exception {
         Persona existsPerson = this.listaDePersonas.get(persona.getDni());
-            
-        if(existsPerson != null) throw new Exception("Ya existe una persona con ese DNI");
-        
-        
+
+        if (existsPerson != null) {
+            throw new Exception("Ya existe una persona con ese DNI");
+        }
+
         this.listaDePersonas.put(persona.getDni(), persona);
     }
 
@@ -32,12 +33,13 @@ public class PersonaRepository {
     }
 
     public ArrayList<Persona> findByApellido(String palabra) {
+
         ArrayList<Persona> match = new ArrayList();
 
         this.listaDePersonas.forEach((dni, persona) -> {
 
-            String apellido = persona.getApellido();
-            boolean startsWith = apellido.startsWith(palabra);
+            String apellido = persona.getApellido().toLowerCase();
+            boolean startsWith = apellido.startsWith(palabra.toLowerCase());
 
             if (startsWith) {
                 match.add(persona);
@@ -59,11 +61,6 @@ public class PersonaRepository {
 
         this.listaDePersonas.replace(dni, persona);
 
-    }
-
-    @Override
-    public String toString() {
-        return "Lista de personas" + this.listaDePersonas;
     }
 
 }
