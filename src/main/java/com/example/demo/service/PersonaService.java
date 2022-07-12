@@ -13,17 +13,11 @@ public class PersonaService {
     private PersonaRepository repo;
 
     public void add(Persona persona) throws Exception {
-
-        if (persona.getDni() == -1) {
-            throw new Exception("Parámetros inválidos.");
-        }
         repo.add(persona);
     }
 
     public Persona findOne(int dni) throws Exception {
-
         return repo.findOne(dni);
-
     }
 
     public ArrayList<Persona> findByApellido(String palabra) throws Exception {

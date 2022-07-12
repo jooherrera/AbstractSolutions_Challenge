@@ -44,7 +44,7 @@ public class PersonaController {
         try {
             return new ResponseEntity<>(service.findOne(dni), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(response.error(e.getMessage()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response.error(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -60,11 +60,17 @@ public class PersonaController {
     @PatchMapping("/personas/{dni}")
     public ResponseEntity<Object> updateSexo(@RequestBody Map<String, Object> requestBody, @PathVariable int dni) {
         try {
-            String sexo = requestBody.get("sexo").toString();
-            service.updateSexo(dni, sexo);
+                      
+            Object sexo = requestBody.get("sexo");
+            
+            if(sexo == null){
+                throw new Exception("No se encontro el valor requerido para actualizar");   
+            }
+            
+            service.updateSexo(dni, sexo.toString());
             return new ResponseEntity<>(response.success("Actualizado correctamente"), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(response.error(e.getMessage()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response.error(e.getMessage()), HttpStatus.NOT_FOUND);
         }
 
     }

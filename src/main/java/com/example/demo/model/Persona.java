@@ -15,7 +15,7 @@ public class Persona {
             throw new Exception("Parámetros inválidos");
         }
 
-        if (dni <= 0 || dni >= 99999999) {
+        if (dni <= 0 || dni > 99999999) {
             throw new Exception("Formato de DNI incorrecto");
         }
 
