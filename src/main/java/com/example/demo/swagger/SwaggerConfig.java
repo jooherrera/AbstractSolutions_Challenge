@@ -19,7 +19,7 @@ public class SwaggerConfig {
             SwaggerResource wsResource = new SwaggerResource();
             wsResource.setName("API V1");
             wsResource.setSwaggerVersion("3.0");
-            wsResource.setLocation("/swagger.json");
+            wsResource.setLocation("/swagger.yml");
 
             List<SwaggerResource> resources = new ArrayList<>();
             resources.add(wsResource);

@@ -60,13 +60,13 @@ public class PersonaController {
     @PatchMapping("/personas/{dni}")
     public ResponseEntity<Object> updateSexo(@RequestBody Map<String, Object> requestBody, @PathVariable int dni) {
         try {
-                      
+
             Object sexo = requestBody.get("sexo");
-            
-            if(sexo == null){
-                throw new Exception("No se encontro el valor requerido para actualizar");   
+
+            if (sexo == null) {
+                throw new Exception("No se encontro el valor requerido para actualizar");
             }
-            
+
             service.updateSexo(dni, sexo.toString());
             return new ResponseEntity<>(response.success("Actualizado correctamente"), HttpStatus.OK);
         } catch (Exception e) {
@@ -74,5 +74,6 @@ public class PersonaController {
         }
 
     }
+
 
 }
