@@ -1,0 +1,232 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Abstract Solution Challenge",
+    "description": "API para el registro nacional de las personas.",
+    "version": "1.0.0",
+    "contact": {
+      "email": "jooherrera4@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Personas",
+      "description": "Registro y obtención de datos de las personas registradas."
+    }
+  ],
+  "paths": {
+    "/api/v1/personas": {
+      "post": {
+        "tags": [
+          "Personas"
+        ],
+        "summary": "Agrega una nueva persona a la base de datos.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/addPerson"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Persona registrada correctamente."
+          },
+          "400": {
+            "description": "Parámetros inválidos."
+          },
+          "409": {
+            "description": "Ya existe una persona con el dni que intenta registrar"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Personas"
+        ],
+        "summary": "Busca personas con las primeras tres letras del apellido",
+        "description": "Si no encuentra coincidencia, retorna un array vacio con código 200",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "apellido",
+            "description": "Primeras letras del apellido (min 3 letras)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 3
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista con todas las personas que empiezen con las tres letras de la query",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "match": {
+                    "$ref": "#/components/examples/getByApellido"
+                  },
+                  "empty": {
+                    "$ref": "#/components/examples/getByApellidoEmpty"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No se encontró el parámetro en la query | Minimo 3 caracteres"
+          }
+        }
+      }
+    },
+    "/api/v1/personas/{dni}": {
+      "get": {
+        "tags": [
+          "Personas"
+        ],
+        "summary": "Busca una persona por el dni",
+        "description": "Si no encuentra a la persona retorna [Not Found - 404 ]",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dni",
+            "required": true,
+            "description": "DNI de la persona que se busca MIN=0  MAX=99999999",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99999999
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna una persona",
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "Jose",
+                  "apellido": "Herrera",
+                  "sexo": "Masculino",
+                  "dni": 11222333
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parametro inválido"
+          },
+          "404": {
+            "description": "No existe persona registrada con el DNI ingresado"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Personas"
+        ],
+        "summary": "Actualiza el sexo de la persona",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "dni",
+            "description": "DNI de la persona",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Actualizar sexo",
+                "type": "object",
+                "required": [
+                  "sexo"
+                ],
+                "properties": {
+                  "sexo": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "sexo": "Masculino"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado correctamente"
+          },
+          "400": {
+            "description": "No se encontró el JSON en el body"
+          },
+          "404": {
+            "description": "No se encontró el valor requerido para actualizar | No existe la persona"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "addPerson": {
+        "title": "Agregar nueva persona",
+        "type": "object",
+        "required": [
+          "nombre",
+          "apellido",
+          "sexo",
+          "dni"
+        ],
+        "properties": {
+          "nombre": {
+            "type": "string"
+          },
+          "apellido": {
+            "type": "string"
+          },
+          "sexo": {
+            "type": "string"
+          },
+          "dni": {
+            "type": "integer"
+          }
+        },
+        "example": {
+          "nombre": "Jose",
+          "apellido": "Herrera",
+          "sexo": "Masculino",
+          "dni": 11222333
+        }
+      }
+    },
+    "examples": {
+      "getByApellido": {
+        "value": [
+          {
+            "nombre": "Jose",
+            "apellido": "Herrera",
+            "sexo": "Masculino",
+            "dni": 11222333
+          }
+        ]
+      },
+      "getByApellidoEmpty": {
+        "value": []
+      }
+    }
+  }
+}
